@@ -18,4 +18,8 @@ import java.lang.annotation.Target;
 @Documented
 @Component
 public @interface ABTest {
+    Class<?> testFor();
+    String mainConfigKey();
+    String loggerName() default "";
+    String[] logFieldNames() default {};
 }
