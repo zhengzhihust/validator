@@ -35,6 +35,9 @@ public abstract class AbstractRunnableWithContext implements Runnable {
         ContextManager.put(LogUtils.Attributes.TRACE_ID, CommonUtil.getTraceId());
     }
 
+    /**
+     * run
+     */
     public abstract void doRun();
 
     public String getLoggerName() {
