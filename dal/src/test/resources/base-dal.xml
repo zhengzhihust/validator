@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/context
+               				http://www.springframework.org/schema/context/spring-context.xsd">
+    <tx:annotation-driven transaction-manager="transactionManager" />
+
+
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation">
+            <value>classpath:sqlmap/sql-map.xml</value>
+        </property>
+    </bean>
+    <bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+        <property name="sqlMapClient" ref="sqlMapClient" />
+        <property name="dataSource" ref="tddlDataSource" />
+    </bean>
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="tddlDataSource" />
+    </bean>
+    <bean id="sequenceDao" class="com.taobao.tddl.client.sequence.impl.GroupSequenceDao"
+          init-method="init">
+        <property name="appName" value="OPENSHOP_APP" />
+        <property name="dscount" value="1" />
+        <property name="dbGroupKeys">
+            <list>
+                <value>OPENSHOP_GROUP</value>
+            </list>
+        </property>
+        <property name="adjust" value="true" />
+        <property name="retryTimes" value="3" />
+    </bean>
+    <bean id="openshopUserSequence" class="com.taobao.tddl.client.sequence.impl.GroupSequence"
+          init-method="init">
+        <property name="sequenceDao" ref="sequenceDao" />
+        <property name="name" value="sequence" />
+    </bean>
+    <!-- OPENSHOP库定义结束 -->
+    <bean id="tairManager" class="com.taobao.tair.impl.mc.MultiClusterTairManager"
+          init-method="init">
+        <property name="configID">
+            <value>${tair.config.id}</value>
+        </property>
+        <property name="dynamicConfig">
+            <value type="java.lang.Boolean">true</value>
+        </property>
+    </bean>
+    <bean id="mdbCache" class="com.taobao.shopbase.dal.cache.TairCache">
+        <property name="tairManager" ref="tairManager" />
+        <property name="namespace" value="${tair.namespace}" />
+    </bean>
+    <bean id="baseMdbCAO" class="com.taobao.shopbase.dal.cache.GenericCacheAccessObject"
+          abstract="true">
+        <property name="cache" ref="mdbCache" />
+    </bean>
+    <bean id="limitCAO" parent="baseMdbCAO">
+        <property name="prefix" value="limit_" />
+    </bean>
+    <bean id="reportCAO" parent="baseMdbCAO">
+        <property name="prefix" value="intercept_" />
+    </bean>
+    <bean id="shopTypeCAO" parent="baseMdbCAO">
+        <property name="prefix" value="openshop_shoptype_" />
+    </bean>
+    <bean id="certifyCAO" parent="baseMdbCAO">
+        <property name="prefix" value="openshop_null_certify_" />
+    </bean>
+    <bean id="deviceInfoCAO" parent="baseMdbCAO">
+        <property name="prefix" value="USER_DEVICE_INFO_" />
+    </bean>
+</beans>

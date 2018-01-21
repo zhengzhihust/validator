@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2018. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="algoFileDAO">
+
+    <typeAlias alias="AlgoFileDO"
+               type="com.taobao.shopbase.dal.entity.AlgoFileDO" />
+
+    <resultMap id="algoFileResultMap"
+               class="com.taobao.shopbase.dal.entity.AlgoFileDO">
+        <result property="id" column="ID"/>
+        <result property="fileName" column="FILE_NAME"/>
+        <result property="commitId" column="COMMIT_ID"/>
+        <result property="namesPath" column="NAMES_PATH"/>
+        <result property="treePath" column="TREE_PATH"/>
+        <result property="status" column="STATUS"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userNick" column="USER_NICK"/>
+        <result property="gmtCreate" column="GMT_CREATE"/>
+        <result property="gmtModified" column="GMT_MODIFIED"/>
+        <result property="comment" column="COMMENT"/>
+        <result property="extra" column="EXTRA"/>
+    </resultMap>
+
+
+    <sql id="shopbase.algo.file.columns.all">
+        ID,
+        FILE_NAME,
+        COMMIT_ID,
+        NAMES_PATH,
+        TREE_PATH,
+        STATUS,
+        USER_ID,
+        USER_NICK,
+        GMT_CREATE,
+        GMT_MODIFIED,
+        COMMENT,
+        EXTRA
+    </sql>
+
+    <insert id="insert"
+            parameterClass="com.taobao.shopbase.dal.entity.AlgoFileDO">
+        INSERT INTO ALGO_FILE(
+        <include refid="shopbase.algo.file.columns.all" />
+        )
+        VALUES(
+        #id#,
+        #fileName#,
+        #commitId#,
+        #namesPath#,
+        #treePath#,
+        #status#,
+        #userId#,
+        #userNick#,
+        NOW(),
+        NOW(),
+        #comment#,
+        #extra#
+        )
+
+        <selectKey resultClass="long" keyProperty="id">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+
+    <select id="com.taobao.shopbase.dal.entity.AlgoFileDO.listAll" resultMap="algoFileResultMap">
+        select
+        <include refid="shopbase.algo.file.columns.all" />
+        from
+        ALGO_FILE
+        order by id desc
+    </select>
+
+    <select id="com.taobao.shopbase.dal.entity.AlgoFileDO.count" resultClass="java.lang.Integer">
+        select
+        count(1)
+        from
+        ALGO_FILE
+    </select>
+</sqlMap>
