@@ -1,6 +1,6 @@
 package com.welink.hub.core;
 
-import com.welink.hub.core.dto.ValidateContext;
+import com.welink.hub.core.context.ValidateContext;
 
 public interface ValidatorExecutor {
     /**

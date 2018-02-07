@@ -3,7 +3,7 @@
  *
  */
 
-package com.welink.hub.core.dto;
+package com.welink.hub.core.context;
 
 /**
  * @Author cheng

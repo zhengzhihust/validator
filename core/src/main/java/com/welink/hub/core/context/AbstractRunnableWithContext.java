@@ -5,8 +5,8 @@
 
 package com.welink.hub.core.context;
 
-import com.welink.hub.core.log.LogUtils;
-import com.welink.hub.core.utils.CommonUtil;
+import com.welink.hub.core.utils.log.LogUtils;
+import com.welink.hub.core.utils.common.CommonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

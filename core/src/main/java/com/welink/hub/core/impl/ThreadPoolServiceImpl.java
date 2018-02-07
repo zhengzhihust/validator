@@ -21,7 +21,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Component("threadPoolService")
+@Component
 public class ThreadPoolServiceImpl implements ThreadPoolService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ThreadPoolServiceImpl.class);

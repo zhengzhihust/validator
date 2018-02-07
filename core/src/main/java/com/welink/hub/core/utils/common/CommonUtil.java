@@ -3,10 +3,10 @@
  *
  */
 
-package com.welink.hub.core.utils;
+package com.welink.hub.core.utils.common;
 
 import com.fasterxml.uuid.Generators;
-import com.welink.hub.core.log.LogUtils;
+import com.welink.hub.core.utils.log.LogUtils;
 import org.slf4j.MDC;
 
 public class CommonUtil {

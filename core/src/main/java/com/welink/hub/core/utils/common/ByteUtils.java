@@ -3,7 +3,7 @@
  *
  */
 
-package com.welink.hub.core.utils;
+package com.welink.hub.core.utils.common;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -165,14 +165,16 @@ public class ByteUtils {
      * @return
      */
     public static int compare(byte[] b1, int off1, int len1, byte[] b2, int off2, int len2) {
-        if (b1 == b2 && off1 == off2 && len1 == len2)
+        if (b1 == b2 && off1 == off2 && len1 == len2) {
             return 0;
+        }
 
         int l1 = off1 + len1, l2 = off2 + len2;
         for (int i1 = off1, i2 = off2; i1 < l1 && i2 < l2; i1++, i2++) {
             int a = b1[i1], b = b2[i2];
-            if (a != b)
+            if (a != b) {
                 return a - b;
+            }
         }
         return l1 - l2;
     }
@@ -197,8 +199,9 @@ public class ByteUtils {
      */
     public static int hash(byte[] bytes, int offset, int length) {
         int hash = 1;
-        for (int i = offset; i < offset + length; i++)
+        for (int i = offset; i < offset + length; i++) {
             hash = (31 * hash) + (int) bytes[i];
+        }
         return hash;
     }
 
@@ -563,12 +566,15 @@ public class ByteUtils {
      * @return hex string.
      */
     public static String bytes2hex(byte[] bs, int off, int len) {
-        if (off < 0)
+        if (off < 0) {
             throw new IndexOutOfBoundsException("bytes2hex: offset < 0, offset is " + off);
-        if (len < 0)
+        }
+        if (len < 0) {
             throw new IndexOutOfBoundsException("bytes2hex: length < 0, length is " + len);
-        if (off + len > bs.length)
+        }
+        if (off + len > bs.length) {
             throw new IndexOutOfBoundsException("bytes2hex: offset + length > array length.");
+        }
 
         byte b;
         int r = off, w = 0;
@@ -582,12 +588,15 @@ public class ByteUtils {
     }
 
     public static String bytes2HbaseHex(byte[] bs, int off, int len) {
-        if (off < 0)
+        if (off < 0) {
             throw new IndexOutOfBoundsException("bytes2hex: offset < 0, offset is " + off);
-        if (len < 0)
+        }
+        if (len < 0) {
             throw new IndexOutOfBoundsException("bytes2hex: length < 0, length is " + len);
-        if (off + len > bs.length)
+        }
+        if (off + len > bs.length) {
             throw new IndexOutOfBoundsException("bytes2hex: offset + length > array length.");
+        }
 
         byte b;
         int r = off, w = 0;
@@ -621,20 +630,24 @@ public class ByteUtils {
      * @return byte array.
      */
     public static byte[] hex2bytes(final String str, final int off, int len) {
-        if ((len & 1) == 1)
+        if ((len & 1) == 1) {
             throw new IllegalArgumentException("hex2bytes: ( len & 1 ) == 1.");
-
-        if (off < 0)
+        }
+        if (off < 0) {
             throw new IndexOutOfBoundsException("hex2bytes: offset < 0, offset is " + off);
-        if (len < 0)
+        }
+        if (len < 0) {
             throw new IndexOutOfBoundsException("hex2bytes: length < 0, length is " + len);
-        if (off + len > str.length())
+        }
+        if (off + len > str.length()) {
             throw new IndexOutOfBoundsException("hex2bytes: offset + length > array length.");
+        }
 
         int num = len / 2, r = off, w = 0;
         byte[] b = new byte[num];
-        for (int i = 0; i < num; i++)
+        for (int i = 0; i < num; i++) {
             b[w++] = (byte) (hex(str.charAt(r++)) << 4 | hex(str.charAt(r++)));
+        }
         return b;
     }
 
@@ -722,8 +735,9 @@ public class ByteUtils {
      */
     public static String bytes2base64(byte[] b, int offset, int length, String code) {
         int cl = code.length();
-        if (cl < 64)
+        if (cl < 64) {
             throw new IllegalArgumentException("Base64 code length < 64.");
+        }
 
         return bytes2base64(b, offset, length, code.toCharArray(), cl > 64);
     }
@@ -738,12 +752,15 @@ public class ByteUtils {
      * @return base64 string.
      */
     private static String bytes2base64(byte[] bs, int off, int len, char[] code, boolean pad) {
-        if (off < 0)
+        if (off < 0) {
             throw new IndexOutOfBoundsException("bytes2base64: offset < 0, offset is " + off);
-        if (len < 0)
+        }
+        if (len < 0) {
             throw new IndexOutOfBoundsException("bytes2base64: length < 0, length is " + len);
-        if (off + len > bs.length)
+        }
+        if (off + len > bs.length) {
             throw new IndexOutOfBoundsException("bytes2base64: offset + length > array length.");
+        }
 
         int num = len / 3, rem = len % 3, r = off, w = 0;
         char[] cs = new char[num * 4 + (rem == 0 ? 0 : pad ? 4 : rem + 1)];
@@ -770,8 +787,9 @@ public class ByteUtils {
             cs[w++] = code[b1 >> 2];
             cs[w++] = code[(b1 << 4) & MASK6 | (b2 >> 4)];
             cs[w++] = code[(b2 << 2) & MASK6];
-            if (pad)
+            if (pad) {
                 cs[w++] = code[64];
+            }
         }
         return new String(cs);
     }
@@ -804,8 +822,8 @@ public class ByteUtils {
      * @param str base64 string.
      * @return byte array.
      */
-    public static byte[] URLSafeBase642bytes(String str) {
-        return URLSafeBase642bytes(str, 0, str.length());
+    public static byte[] urlSafeBase642Bytes(String str) {
+        return urlSafeBase642Bytes(str, 0, str.length());
     }
 
     /**
@@ -816,7 +834,7 @@ public class ByteUtils {
      * @param length length.
      * @return byte array.
      */
-    public static byte[] URLSafeBase642bytes(String str, int offset, int length) {
+    public static byte[] urlSafeBase642Bytes(String str, int offset, int length) {
         return base642bytes(str, offset, length, URLSAFE_BASE64_STRING);
     }
 
@@ -842,16 +860,20 @@ public class ByteUtils {
      */
     public static byte[] base642bytes(final String str, final int off, final int len,
                                       final String code) {
-        if (off < 0)
+        if (off < 0) {
             throw new IndexOutOfBoundsException("offset < 0, offset is " + off);
-        if (len < 0)
+        }
+        if (len < 0) {
             throw new IndexOutOfBoundsException("length < 0, length is " + len);
-        if (off + len > str.length())
+        }
+        if (off + len > str.length()) {
             throw new IndexOutOfBoundsException("offset + length > string length.");
+        }
 
         int cl = code.length();
-        if (cl < 64)
+        if (cl < 64) {
             throw new IllegalArgumentException("Base64 code length < 64.");
+        }
 
         int rem = len % 4, num = len / 4, size = num * 3;
         switch (rem) {
@@ -877,6 +899,8 @@ public class ByteUtils {
                 break;
             case 3:
                 size += 2;
+                break;
+            default:
                 break;
         }
 
@@ -1011,8 +1035,9 @@ public class ByteUtils {
     public static byte[] rc4(byte[] v, byte[] k) {
         int i, j, s[] = new int[RC4_SBOX_LEN], vl = v.length, kl = k.length;
 
-        for (i = 0; i < RC4_SBOX_LEN; i++)
+        for (i = 0; i < RC4_SBOX_LEN; i++) {
             s[i] = i;
+        }
 
         j = 0;
         for (i = 0; i < RC4_SBOX_LEN; i++) {
@@ -1036,26 +1061,32 @@ public class ByteUtils {
     }
 
     private static byte hex(char c) {
-        if (c <= '9')
+        if (c <= '9') {
             return (byte) (c - '0');
-        if (c >= 'a' && c <= 'f')
+        }
+        if (c >= 'a' && c <= 'f') {
             return (byte) (c - 'a' + 10);
-        if (c >= 'A' && c <= 'F')
+        }
+        if (c >= 'A' && c <= 'F') {
             return (byte) (c - 'A' + 10);
+        }
         throw new IllegalArgumentException("hex string format error [" + c + "].");
     }
 
     private static byte[] decodeTable(String code) {
-        if (code.length() < 64)
+        if (code.length() < 64) {
             throw new IllegalArgumentException("Base64 code length < 64.");
+        }
 
         byte[] ret = BASE64_DECODE_TABLE_MAP.get(code);
         if (ret == null) {
             ret = new byte[128];
-            for (int i = 0; i < 128; i++)
+            for (int i = 0; i < 128; i++) {
                 ret[i] = -1;
-            for (int i = 0; i < 64; i++)
+            }
+            for (int i = 0; i < 64; i++) {
                 ret[code.charAt(i)] = (byte) i;
+            }
             BASE64_DECODE_TABLE_MAP.put(code, ret);
         }
         return ret;
@@ -1067,8 +1098,9 @@ public class ByteUtils {
         while (is.available() > 0) {
             int read, total = 0;
             do {
-                if ((read = is.read(buf, total, bs - total)) <= 0)
+                if ((read = is.read(buf, total, bs - total)) <= 0) {
                     break;
+                }
                 total += read;
             } while (total < bs);
             md.update(buf);
@@ -1098,12 +1130,14 @@ public class ByteUtils {
                     for (Enumeration<InetAddress> ads = itf.getInetAddresses(); ads
                             .hasMoreElements();) {
                         InetAddress ad = ads.nextElement();
-                        if (ad == null || ad.isLoopbackAddress())
+                        if (ad == null || ad.isLoopbackAddress()) {
                             continue;
+                        }
 
                         String ip = ad.getHostAddress();
-                        if ("0.0.0.0".equals(ip) || "127.0.0.1".equals(ip))
+                        if ("0.0.0.0".equals(ip) || "127.0.0.1".equals(ip)) {
                             continue;
+                        }
 
                         return ad;
                     }
@@ -1114,13 +1148,13 @@ public class ByteUtils {
         return null;
     }
 
-    @SuppressWarnings("serial")
     private static class _Random extends Random {
 
         _Random(long seed) {
             super(seed);
         }
 
+        @Override
         protected int next(int bits) {
             return super.next(bits);
         }

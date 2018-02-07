@@ -3,7 +3,7 @@
  *
  */
 
-package com.welink.hub.core.log;
+package com.welink.hub.core.utils.log;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;

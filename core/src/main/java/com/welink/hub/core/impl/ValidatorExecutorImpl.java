@@ -14,7 +14,7 @@ import com.welink.hub.core.annotation.ABTest;
 import com.welink.hub.core.annotation.ValidatorAnno;
 import com.welink.hub.core.context.ContextManager;
 import com.welink.hub.core.context.AbstractRunnableWithContext;
-import com.welink.hub.core.dto.ValidateContext;
+import com.welink.hub.core.context.ValidateContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
@@ -32,6 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class ValidatorExecutorImpl implements ValidatorExecutor, ApplicationContextAware {
 
     private static final Comparator<Validator> COMPARATOR =
