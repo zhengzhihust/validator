@@ -9,13 +9,13 @@
 <sqlMapConfig>
     <settings cacheModelsEnabled="false" enhancementEnabled="false"
               lazyLoadingEnabled="false" maxRequests="3000" maxSessions="3000"
-              maxTransactions="3000" useStatementNamespaces="true" />
+              maxTransactions="3000" useStatementNamespaces="true"/>
 
-    <sqlMap resource="sqlmap/openshop/openshop-user.xml" />
-    <sqlMap resource="sqlmap/openshop/openshop-user-category.xml" />
-    <sqlMap resource="sqlmap/openshop/intercept-condition.xml" />
-    <sqlMap resource="sqlmap/openshop/openshop-intercept.xml" />
-    <sqlMap resource="sqlmap/openshop/user-edu.xml" />
-    <sqlMap resource="sqlmap/openshop/openshop-category-change.xml" />
-    <sqlMap resource="sqlmap/openshop/algo-file.xml" />
+    <sqlMap resource="sqlmap/openshop/openshop-user.xml"/>
+    <sqlMap resource="sqlmap/openshop/openshop-user-category.xml"/>
+    <sqlMap resource="sqlmap/openshop/intercept-condition.xml"/>
+    <sqlMap resource="sqlmap/openshop/openshop-intercept.xml"/>
+    <sqlMap resource="sqlmap/openshop/user-edu.xml"/>
+    <sqlMap resource="sqlmap/openshop/openshop-category-change.xml"/>
+    <sqlMap resource="sqlmap/openshop/algo-file.xml"/>
 </sqlMapConfig>

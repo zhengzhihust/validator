@@ -21,6 +21,7 @@ import java.lang.annotation.Target;
 public @interface ValidatorAnno {
     /**
      * master or slave
+     *
      * @return
      */
     @AliasFor("chain")
@@ -28,6 +29,7 @@ public @interface ValidatorAnno {
 
     /**
      * chain name
+     *
      * @return
      */
     @AliasFor("value")
@@ -35,12 +37,12 @@ public @interface ValidatorAnno {
 
     /**
      * order
+     *
      * @return
      */
     int order() default 1;
 
     /**
-     *
      * @return
      */
     boolean exception() default false;

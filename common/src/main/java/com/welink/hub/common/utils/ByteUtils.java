@@ -3,7 +3,7 @@
  *
  */
 
-package com.welink.hub.core.utils.common;
+package com.welink.hub.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,40 +22,72 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author zhengzhi
+ */
 public class ByteUtils {
 
-    private static final char[]                     BASE16                  = { '0', '1', '2', '3',
-            '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'     };
-    private static final char[]                     HBASE16                 = { '0', '1', '2', '3',
-            '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'     };
+    private static final char[] BASE16 = {'0', '1', '2', '3',
+            '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
+    private static final char[] HBASE16 = {'0', '1', '2', '3',
+            '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
-    private static final String                     BASE64_STRING           = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    private static final String BASE64_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-    private static final char[]                     BASE64                  = BASE64_STRING
+    private static final char[] BASE64 = BASE64_STRING
             .toCharArray();
 
-    private static final String                     URLSAFE_BASE64_STRING   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+    private static final String URLSAFE_BASE64_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-    private static final char[]                     URLSAFE_BASE64          = URLSAFE_BASE64_STRING
+    private static final char[] URLSAFE_BASE64 = URLSAFE_BASE64_STRING
             .toCharArray();
 
-    private static final int                        MASK4                   = 0x0f, MASK6 = 0x3f,
+    private static final int MASK4 = 0x0f, MASK6 = 0x3f,
             MASK8 = 0xff;
 
-    private static final Map<String, byte[]>        BASE64_DECODE_TABLE_MAP = new ConcurrentHashMap<String, byte[]>();
+    private static final Map<String, byte[]> BASE64_DECODE_TABLE_MAP = new ConcurrentHashMap<String, byte[]>();
 
     // rc4
-    private static final int                        RC4_SBOX_LEN            = 256;
+    private static final int RC4_SBOX_LEN = 256;
 
     // uuid
-    private static final int                        PREFIX;
+    private static final int PREFIX;
 
-    private static final _Random                    RANDOM;
+    private static final _Random RANDOM;
 
-    private static final AtomicInteger              COUNTER                 = new AtomicInteger(0);
+    private static final AtomicInteger COUNTER = new AtomicInteger(0);
 
     // md
-    private static final ThreadLocal<MessageDigest> MD                      = new ThreadLocal<MessageDigest>();
+    private static final ThreadLocal<MessageDigest> MD = new ThreadLocal<MessageDigest>();
+    private static final int SUM_SECURE_RANDOM = 64;
+    private static final String UTF8 = "UTF-8";
+    private static SecureRandom[] secureRandoms;
+    private static Random random = new Random();
+
+    static {
+        secureRandoms = new SecureRandom[SUM_SECURE_RANDOM];
+        for (int i = 0; i < SUM_SECURE_RANDOM; i++) {
+            secureRandoms[i] = new SecureRandom();
+        }
+    }
+
+    static {
+        decodeTable(BASE64_STRING);
+        decodeTable(URLSAFE_BASE64_STRING);
+
+        long seed = System.currentTimeMillis();
+        InetAddress ad = localAddress();
+
+        if (ad == null) {
+            PREFIX = (int) seed;
+        } else {
+            PREFIX = ByteUtils.bytes2int(ad.getAddress());
+            seed ^= PREFIX;
+        }
+        RANDOM = new _Random(seed);
+    }
+    private ByteUtils() {
+    }
 
     public static byte[] long2ComparableBytes(Long l) {
         if (l == null) {
@@ -113,16 +145,6 @@ public class ByteUtils {
         return result;
     }
 
-    private static SecureRandom[] secureRandoms;
-    private static Random         random            = new Random();
-    private static final int      SUM_SECURE_RANDOM = 64;
-    static {
-        secureRandoms = new SecureRandom[SUM_SECURE_RANDOM];
-        for (int i = 0; i < SUM_SECURE_RANDOM; i++) {
-            secureRandoms[i] = new SecureRandom();
-        }
-    }
-
     public static String randomUuid() {
         return bytes2hex(randomBytesUuid());
     }
@@ -156,10 +178,10 @@ public class ByteUtils {
     }
 
     /**
-     * @param b1 byte-array1
+     * @param b1   byte-array1
      * @param off1 offset1
      * @param len1 length1
-     * @param b2 byte-array1
+     * @param b2   byte-array1
      * @param off2 offset2
      * @param len2 length2
      * @return
@@ -192,7 +214,7 @@ public class ByteUtils {
     /**
      * hash byte array.
      *
-     * @param bytes byte array.
+     * @param bytes  byte array.
      * @param offset offset.
      * @param length length.
      * @return hash code.
@@ -208,7 +230,7 @@ public class ByteUtils {
     /**
      * byte array copy.
      *
-     * @param src src.
+     * @param src    src.
      * @param length new length.
      * @return new byte array.
      */
@@ -225,7 +247,7 @@ public class ByteUtils {
      * @return byte[].
      */
     public static byte[] short2bytes(short v) {
-        byte[] b = { 0, 0 };
+        byte[] b = {0, 0};
         short2bytes(v, b, 0);
         return b;
     }
@@ -258,7 +280,7 @@ public class ByteUtils {
      * @return byte[].
      */
     public static byte[] int2bytes(int v) {
-        byte[] b = { 0, 0, 0, 0 };
+        byte[] b = {0, 0, 0, 0};
         int2bytes(v, b, 0);
         return b;
     }
@@ -276,8 +298,8 @@ public class ByteUtils {
     /**
      * to byte array.
      *
-     * @param v value.
-     * @param b byte array.
+     * @param v   value.
+     * @param b   byte array.
      * @param off array offset.
      */
     public static void int2bytes(int v, byte[] b, int off) {
@@ -294,7 +316,7 @@ public class ByteUtils {
      * @return byte[].
      */
     public static byte[] float2bytes(float v) {
-        byte[] b = { 0, 0, 0, 0 };
+        byte[] b = {0, 0, 0, 0};
         float2bytes(v, b, 0);
         return b;
     }
@@ -312,8 +334,8 @@ public class ByteUtils {
     /**
      * to byte array.
      *
-     * @param v value.
-     * @param b byte array.
+     * @param v   value.
+     * @param b   byte array.
      * @param off array offset.
      */
     public static void float2bytes(float v, byte[] b, int off) {
@@ -334,7 +356,7 @@ public class ByteUtils {
         if (v == null) {
             return null;
         }
-        byte[] b = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        byte[] b = {0, 0, 0, 0, 0, 0, 0, 0};
         long2bytes(v, b, 0);
         return b;
     }
@@ -352,8 +374,8 @@ public class ByteUtils {
     /**
      * to byte array.
      *
-     * @param v value.
-     * @param b byte array.
+     * @param v   value.
+     * @param b   byte array.
      * @param off array offset.
      */
     public static void long2bytes(long v, byte[] b, int off) {
@@ -374,7 +396,7 @@ public class ByteUtils {
      * @return byte[].
      */
     public static byte[] double2bytes(double v) {
-        byte[] b = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        byte[] b = {0, 0, 0, 0, 0, 0, 0, 0};
         double2bytes(v, b, 0);
         return b;
     }
@@ -392,8 +414,8 @@ public class ByteUtils {
     /**
      * to byte array.
      *
-     * @param v value.
-     * @param b byte array.
+     * @param v   value.
+     * @param b   byte array.
      * @param off array offset.
      */
     public static void double2bytes(double v, byte[] b, int off) {
@@ -421,7 +443,7 @@ public class ByteUtils {
     /**
      * to short.
      *
-     * @param b byte array.
+     * @param b   byte array.
      * @param off offset.
      * @return short.
      */
@@ -442,7 +464,7 @@ public class ByteUtils {
     /**
      * to int.
      *
-     * @param b byte array.
+     * @param b   byte array.
      * @param off offset.
      * @return int.
      */
@@ -464,7 +486,7 @@ public class ByteUtils {
     /**
      * to int.
      *
-     * @param b byte array.
+     * @param b   byte array.
      * @param off offset.
      * @return int.
      */
@@ -485,7 +507,7 @@ public class ByteUtils {
     /**
      * to long.
      *
-     * @param b byte array.
+     * @param b   byte array.
      * @param off offset.
      * @return long.
      */
@@ -509,7 +531,7 @@ public class ByteUtils {
     /**
      * to long.
      *
-     * @param b byte array.
+     * @param b   byte array.
      * @param off offset.
      * @return double.
      */
@@ -560,7 +582,7 @@ public class ByteUtils {
     /**
      * to hex string.
      *
-     * @param bs byte array.
+     * @param bs  byte array.
      * @param off offset.
      * @param len length.
      * @return hex string.
@@ -674,7 +696,7 @@ public class ByteUtils {
     /**
      * to base64 string.
      *
-     * @param b byte array.
+     * @param b   byte array.
      * @param pad has pad.
      * @return base64 string.
      */
@@ -685,10 +707,10 @@ public class ByteUtils {
     /**
      * to base64 string.
      *
-     * @param b byte array.
+     * @param b      byte array.
      * @param offset offset.
      * @param length length.
-     * @param pad has pad.
+     * @param pad    has pad.
      * @return base64 string.
      */
     public static String bytes2base64(byte[] b, int offset, int length, boolean pad) {
@@ -718,7 +740,7 @@ public class ByteUtils {
     /**
      * to base64 string.
      *
-     * @param b byte array.
+     * @param b    byte array.
      * @param code base64 code string(0-63 is base64 char, 64 is pad char).
      * @return base64 string.
      */
@@ -729,7 +751,7 @@ public class ByteUtils {
     /**
      * to base64 string.
      *
-     * @param b byte array.
+     * @param b    byte array.
      * @param code base64 code string(0-63 is base64 char, 64 is pad char).
      * @return base64 string.
      */
@@ -745,9 +767,9 @@ public class ByteUtils {
     /**
      * to base64 string.
      *
-     * @param bs byte array.
-     * @param off offset.
-     * @param len length.
+     * @param bs   byte array.
+     * @param off  offset.
+     * @param len  length.
      * @param code base64 code(0-63 is base64 char,64 is pad char).
      * @return base64 string.
      */
@@ -807,7 +829,7 @@ public class ByteUtils {
     /**
      * from base64 string.
      *
-     * @param str base64 string.
+     * @param str    base64 string.
      * @param offset offset.
      * @param length length.
      * @return byte array.
@@ -829,7 +851,7 @@ public class ByteUtils {
     /**
      * from base64 string.
      *
-     * @param str base64 string.
+     * @param str    base64 string.
      * @param offset offset.
      * @param length length.
      * @return byte array.
@@ -841,7 +863,7 @@ public class ByteUtils {
     /**
      * from base64 string.
      *
-     * @param str base64 string.
+     * @param str  base64 string.
      * @param code base64 code(0-63 is base64 char,64 is pad char).
      * @return byte array.
      */
@@ -852,9 +874,9 @@ public class ByteUtils {
     /**
      * from base64 string.
      *
-     * @param str base64 string.
-     * @param off offset.
-     * @param len length.
+     * @param str  base64 string.
+     * @param off  offset.
+     * @param len  length.
      * @param code base64 code(0-63 is base64 char,64 is pad char).
      * @return byte array.
      */
@@ -927,8 +949,6 @@ public class ByteUtils {
         }
         return b;
     }
-
-    private static final String UTF8 = "UTF-8";
 
     /**
      * md5.
@@ -1128,7 +1148,7 @@ public class ByteUtils {
                 while (itfs.hasMoreElements()) {
                     NetworkInterface itf = itfs.nextElement();
                     for (Enumeration<InetAddress> ads = itf.getInetAddresses(); ads
-                            .hasMoreElements();) {
+                            .hasMoreElements(); ) {
                         InetAddress ad = ads.nextElement();
                         if (ad == null || ad.isLoopbackAddress()) {
                             continue;
@@ -1158,24 +1178,5 @@ public class ByteUtils {
         protected int next(int bits) {
             return super.next(bits);
         }
-    }
-
-    static {
-        decodeTable(BASE64_STRING);
-        decodeTable(URLSAFE_BASE64_STRING);
-
-        long seed = System.currentTimeMillis();
-        InetAddress ad = localAddress();
-
-        if (ad == null) {
-            PREFIX = (int) seed;
-        } else {
-            PREFIX = ByteUtils.bytes2int(ad.getAddress());
-            seed ^= PREFIX;
-        }
-        RANDOM = new _Random(seed);
-    }
-
-    private ByteUtils() {
     }
 }

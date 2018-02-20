@@ -18,6 +18,7 @@
         <module>core</module>
         <module>web</module>
         <module>dal</module>
+        <module>common</module>
     </modules>
 
     <properties>
@@ -170,6 +171,11 @@
             <dependency>
                 <groupId>com.welink.hub</groupId>
                 <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.welink.hub</groupId>
+                <artifactId>common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

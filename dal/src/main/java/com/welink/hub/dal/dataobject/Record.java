@@ -5,9 +5,15 @@
 
 package com.welink.hub.dal.dataobject;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Record {
+/**
+ * @author zhengzhi
+ */
+public class Record implements Serializable {
+
+    private static final long serialVersionUID = -5012102323662973986L;
 
     private Long id;
     private Date date;

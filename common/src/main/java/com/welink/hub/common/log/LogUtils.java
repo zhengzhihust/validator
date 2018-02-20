@@ -3,7 +3,7 @@
  *
  */
 
-package com.welink.hub.core.utils.log;
+package com.welink.hub.common.log;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +13,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author zhengzhi
+ */
 public class LogUtils {
 
     public static void putToContext(String key, Object value) {

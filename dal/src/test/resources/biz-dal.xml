@@ -8,7 +8,7 @@
 <sqlMap namespace="algoFileDAO">
 
     <typeAlias alias="AlgoFileDO"
-               type="com.taobao.shopbase.dal.entity.AlgoFileDO" />
+               type="com.taobao.shopbase.dal.entity.AlgoFileDO"/>
 
     <resultMap id="algoFileResultMap"
                class="com.taobao.shopbase.dal.entity.AlgoFileDO">
@@ -45,7 +45,7 @@
     <insert id="insert"
             parameterClass="com.taobao.shopbase.dal.entity.AlgoFileDO">
         INSERT INTO ALGO_FILE(
-        <include refid="shopbase.algo.file.columns.all" />
+        <include refid="shopbase.algo.file.columns.all"/>
         )
         VALUES(
         #id#,
@@ -69,7 +69,7 @@
 
     <select id="com.taobao.shopbase.dal.entity.AlgoFileDO.listAll" resultMap="algoFileResultMap">
         select
-        <include refid="shopbase.algo.file.columns.all" />
+        <include refid="shopbase.algo.file.columns.all"/>
         from
         ALGO_FILE
         order by id desc

@@ -3,12 +3,15 @@
  *
  */
 
-package com.welink.hub.core.utils.common;
+package com.welink.hub.common.utils;
 
 import com.fasterxml.uuid.Generators;
-import com.welink.hub.core.utils.log.LogUtils;
+import com.welink.hub.common.log.LogUtils;
 import org.slf4j.MDC;
 
+/**
+ * @author zhengzhi
+ */
 public class CommonUtil {
 
     public static String getTraceId() {

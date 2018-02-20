@@ -3,7 +3,7 @@
  *
  */
 
-package com.welink.hub.core.utils.log;
+package com.welink.hub.common.log;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +13,9 @@ import org.slf4j.MDC;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author zhengzhi
+ */
 public class TextFileLogUtils {
 
     public static void logAsTextFile(String loggerName, List<String> fieldNames) {
