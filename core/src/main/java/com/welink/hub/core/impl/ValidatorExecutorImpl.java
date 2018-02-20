@@ -62,7 +62,7 @@ public class ValidatorExecutorImpl implements ValidatorExecutor, ApplicationCont
             Validator validator = (Validator) entry.getValue();
             String chain = AnnotatedElementUtils.getMergedAnnotationAttributes(validator.getClass(), ValidatorAnno.class).getString("chain");
             List<Validator> validators = chainToValidators.get(chain);
-            if (validators == null) {
+            if (validators.isEmpty()) {
                 chainToValidators.put(chain, Lists.newArrayList());
             }
             chainToValidators.get(chain).add(validator);
@@ -86,12 +86,12 @@ public class ValidatorExecutorImpl implements ValidatorExecutor, ApplicationCont
         for (Validator validator : chainToValidators.get(chain)) {
             Validator abTestValidator = mainValidatorClassToSubValidator.get(validator.getClass());
             Validator mainThreadValidator = validator;
-            boolean mainValiadtorPass;
+            boolean mainValidatorsPass;
             if (abTestValidator != null) {
                 ABTest abTest = AnnotationUtils.getAnnotation(abTestValidator.getClass(), ABTest.class);
                 final Validator subThreadValidator = isMain ? validator : abTestValidator;
                 mainThreadValidator = isMain ? abTestValidator : validator;
-                mainValiadtorPass = mainThreadValidator.validate(context);
+                mainValidatorsPass = mainThreadValidator.validate(context);
                 ContextManager.Context threadContext = ContextManager.getContext();
                 threadPoolService.execute(new AbstractRunnableWithContext() {
                     @Override
@@ -119,9 +119,9 @@ public class ValidatorExecutorImpl implements ValidatorExecutor, ApplicationCont
                     }
                 });
             } else {
-                mainValiadtorPass = mainThreadValidator.validate(context);
+                mainValidatorsPass = mainThreadValidator.validate(context);
             }
-            if (!mainValiadtorPass) {
+            if (!mainValidatorsPass) {
                 return;
             }
         }

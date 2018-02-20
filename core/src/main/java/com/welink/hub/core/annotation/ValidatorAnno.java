@@ -19,13 +19,29 @@ import java.lang.annotation.Target;
 @Documented
 @Component
 public @interface ValidatorAnno {
+    /**
+     * master or slave
+     * @return
+     */
     @AliasFor("chain")
     String value() default "";
 
+    /**
+     * chain name
+     * @return
+     */
     @AliasFor("value")
     String chain() default "";
 
+    /**
+     * order
+     * @return
+     */
     int order() default 1;
 
+    /**
+     *
+     * @return
+     */
     boolean exception() default false;
 }
