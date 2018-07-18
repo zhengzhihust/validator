@@ -5,6 +5,9 @@
 
 package com.welink.hub.dal.exception;
 
+/**
+ * @author zhengzhi
+ */
 public class IncrOutOfBoundsException extends Exception {
 
     private static final long serialVersionUID = 3326475484590983213L;

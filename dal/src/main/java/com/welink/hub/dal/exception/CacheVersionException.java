@@ -5,6 +5,9 @@
 
 package com.welink.hub.dal.exception;
 
+/**
+ * @author zhengzhi
+ */
 public class CacheVersionException extends Exception {
 
     private static final long serialVersionUID = 7218244504080649560L;

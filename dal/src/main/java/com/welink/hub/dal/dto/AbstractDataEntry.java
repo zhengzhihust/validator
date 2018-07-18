@@ -7,6 +7,9 @@ package com.welink.hub.dal.dto;
 
 import java.io.Serializable;
 
+/**
+ * @author zhengzhi
+ */
 public abstract class AbstractDataEntry<T> {
 
     public abstract int getVersion();

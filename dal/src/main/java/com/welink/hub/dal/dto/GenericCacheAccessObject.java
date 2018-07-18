@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
+/**
+ * @author zhengzhi
+ */
 public class GenericCacheAccessObject<T> implements CacheAccessObject<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(GenericCacheAccessObject.class);

@@ -10,6 +10,9 @@ import com.welink.hub.dal.exception.IncrOutOfBoundsException;
 
 import java.io.Serializable;
 
+/**
+ * @author zhengzhi
+ */
 public interface CacheAccessObject<T> {
 
     /**

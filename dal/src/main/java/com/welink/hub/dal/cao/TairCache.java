@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
+/**
+ * @author zhengzhi
+ */
 public class TairCache implements Cache {
 
     private static final Logger LOG = LoggerFactory.getLogger(TairCache.class);

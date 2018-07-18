@@ -7,6 +7,9 @@ package com.welink.hub.dal.cao;
 
 import java.io.Serializable;
 
+/**
+ * @author zhengzhi
+ */
 public interface SerializeHandler<T> {
 
     Serializable serialize(T obj);
