@@ -149,6 +149,10 @@ public class ByteUtils {
         return bytes2hex(randomBytesUuid());
     }
 
+    public static long reHash(long id) {
+        return bytes2long(long2ComparableBytes(id));
+    }
+
     public static byte[] randomBytesUuid() {
         int id = random.nextInt() & (SUM_SECURE_RANDOM - 1);
         SecureRandom numberGenerator = secureRandoms[id];
